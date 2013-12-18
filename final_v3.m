@@ -17,7 +17,7 @@ log = zeros(steps, size(agent_internal,1), size(agent_internal,2)); % tracks age
 
 %% Scenario init (2)
 n_extremists = 20;
-extremist_uncertainty = 0.1;
+extremist_uncertainty = 0.1 ;
 
 agent_internal(:,2) = 0.4; % set all uncertainties to 0.4
 agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
