@@ -13,21 +13,40 @@ log = zeros(steps, size(agent_internal,1), size(agent_internal,2)); % tracks age
 %% Scenario init (1)
 % agent_internal(:,2) = 0.4; % set all uncertainties to 0.4
 % agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
-% log(1,:,:) = agent_internal;
 
 %% Scenario init (2)
-n_extremists = 20;
+% n_extremists = 20;
+% extremist_uncertainty = 0.1;
+% 
+% agent_internal(:,2) = 0.6; % set all uncertainties to 0.6
+% agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
+% agent_internal(1:n_extremists,1) = 1; % N positive extremists
+% agent_internal(1+n_extremists:2*n_extremists,1) = -1; % N negative extremists
+% agent_internal(1:2*n_extremists,2) = extremist_uncertainty; % set their uncertainty
+
+%% Scenario init (3)
+% n_extremists = 20;
+% extremist_uncertainty = 0.1;
+% 
+% agent_internal(:,2) = 1.2; % set all uncertainties to 1.2
+% agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
+% agent_internal(1:n_extremists,1) = 1; % N positive extremists
+% agent_internal(1+n_extremists:2*n_extremists,1) = -1; % N negative extremists
+% agent_internal(1:2*n_extremists,2) = extremist_uncertainty; % set their uncertainty
+
+%% Scenario init (4)
+n_extremists_pos = 5;
+n_extremists_neg = 5;
 extremist_uncertainty = 0.1;
 
-agent_internal(:,2) = 0.6; % set all uncertainties to 0.6
+agent_internal(:,2) = 1.4; % set all uncertainties to 1.4
 agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
-agent_internal(1:n_extremists,1) = 1; % N positive extremists
-agent_internal(1+n_extremists:2*n_extremists,1) = -1; % N negative extremists
-agent_internal(1:2*n_extremists,2) = extremist_uncertainty; % set their uncertainty
-
-log(1,:,:) = agent_internal;
+agent_internal(1:n_extremists_pos,1) = 1; % N positive extremists
+agent_internal(1+n_extremists_pos:n_extremists_pos+n_extremists_neg,1) = -1; % N negative extremists
+agent_internal(1:n_extremists_pos+n_extremists_neg,2) = extremist_uncertainty; % set their uncertainty
 
 %% Main loop
+log(1,:,:) = agent_internal;
 for i = 2:steps % step 1 was the init, so skip it
     
     agent1 = f_randomAgent(n_agents, 0); % pick any random agent number
@@ -41,6 +60,20 @@ for i = 2:steps % step 1 was the init, so skip it
     
     log(i,:,:) = agent_internal;
 end
+
+%% Count extremist now
+cont_pos = 0;
+cont_neg = 0;
+for i=1:n_agents
+    if log(steps,i,1) > 0.6
+        cont_pos = cont_pos + 1;
+    end
+    if log(steps,i,1) < -0.6
+        cont_neg = cont_neg + 1;
+    end
+end
+cont_pos
+cont_neg
 
 %% Draw the history
 figure();
