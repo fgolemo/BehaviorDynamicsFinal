@@ -19,7 +19,7 @@ log = zeros(steps, size(agent_internal,1), size(agent_internal,2)); % tracks age
 n_extremists = 20;
 extremist_uncertainty = 0.1;
 
-agent_internal(:,2) = 0.4; % set all uncertainties to 0.4
+agent_internal(:,2) = 0.6; % set all uncertainties to 0.6
 agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
 agent_internal(1:n_extremists,1) = 1; % N positive extremists
 agent_internal(1+n_extremists:2*n_extremists,1) = -1; % N negative extremists
