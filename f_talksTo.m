@@ -5,11 +5,11 @@
 %   uncertainty; in the paper "i"
 function new_opinion_uncertainty = f_talksTo(agentA, agentB, agent_internal, w, speed)
 
-% w1: wheight of incoming opinion
-% w2: wheight of incoming uncertainty
-% w3: wheight of overlap
-% w4: wheight of outgoing opinion
-% w5: wheight of outgoing uncertainty
+% w1: weight of incoming opinion
+% w2: weight of incoming uncertainty
+% w3: weight of overlap
+% w4: weight of outgoing opinion
+% w5: weight of outgoing uncertainty
 
 op_ext_in = w(1) * agent_internal(agentB, 1); % opinion, external, incoming
 un_ext_in = w(2) * agent_internal(agentB, 2); % uncertainty, external, incoming

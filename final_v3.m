@@ -7,18 +7,23 @@ speed = 0.5;
 
 %% Init
 agent_internal = zeros(n_agents, 2); % one for opinion, one for uncertainty
-w = ones(n_agents, 5); % wheights for each internal agent model
+w = ones(n_agents, 5); % weights for each internal agent model
+% w(:,1) = rand(n_agents, 1)/2+0.5;
+% w(:,2) = rand(n_agents, 1)/2+0.5;
+w(:,3) = rand(n_agents, 1)+1;
+% w(:,4) = rand(n_agents, 1)/2+0.5;
+% w(:,5) = rand(n_agents, 1)/2+0.5;
 log = zeros(steps, size(agent_internal,1), size(agent_internal,2)); % tracks agent change over time
     
 %% Scenario init (1)
-% agent_internal(:,2) = 0.4; % set all uncertainties to 0.4
+% agent_internal(:,2) = rand(n_agents, 1)/3+0.33; % set all uncertainties to 0.4
 % agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
 
 %% Scenario init (2)
 % n_extremists = 20;
 % extremist_uncertainty = 0.1;
 % 
-% agent_internal(:,2) = 0.6; % set all uncertainties to 0.6
+% agent_internal(:,2) = rand(n_agents, 1)/3+0.5; % set all uncertainties to 0.6
 % agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
 % agent_internal(1:n_extremists,1) = 1; % N positive extremists
 % agent_internal(1+n_extremists:2*n_extremists,1) = -1; % N negative extremists
@@ -28,7 +33,7 @@ log = zeros(steps, size(agent_internal,1), size(agent_internal,2)); % tracks age
 % n_extremists = 20;
 % extremist_uncertainty = 0.1;
 % 
-% agent_internal(:,2) = 1.2; % set all uncertainties to 1.2
+% agent_internal(:,2) = rand(n_agents, 1)/2+1; % set all uncertainties to 1.2
 % agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
 % agent_internal(1:n_extremists,1) = 1; % N positive extremists
 % agent_internal(1+n_extremists:2*n_extremists,1) = -1; % N negative extremists
@@ -39,7 +44,7 @@ n_extremists_pos = 5;
 n_extremists_neg = 5;
 extremist_uncertainty = 0.1;
 
-agent_internal(:,2) = 1.4; % set all uncertainties to 1.4
+agent_internal(:,2) = rand(n_agents, 1)/4+1.3; % set all uncertainties to 1.4
 agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
 agent_internal(1:n_extremists_pos,1) = 1; % N positive extremists
 agent_internal(1+n_extremists_pos:n_extremists_pos+n_extremists_neg,1) = -1; % N negative extremists
