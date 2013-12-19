@@ -53,7 +53,6 @@ agent_internal(:,1) = rand(1,n_agents)*2-1; % random opinions from -1 to +1
 %% Main loop
 log(1,:,:) = agent_internal;
 for i = 2:steps % step 1 was the init, so skip it
-    
     agent1 = f_randomAgent(n_agents, 0); % pick any random agent number
     agent2 = f_randomAgent(n_agents, agent1); % pick any random agent number, except agent1
     
