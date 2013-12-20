@@ -1,5 +1,5 @@
 clear; clc; close all;
-load('scenario 1.mat'); % gives us EmpiricalData1 and EmpiricalData2
+load('scenario 2.mat'); % gives us EmpiricalData1 and EmpiricalData2
 
 %% General init
 steps = size(EmpiricalData1,1);
@@ -21,6 +21,7 @@ log(1,:,:) = agent_internal;
 error = 0;
 times = zeros(steps-1,6);
 
+tic
 for i = 2:steps % step 1 was the init, so skip it
     
     %% find out which agents communicated
@@ -50,33 +51,26 @@ for i = 2:steps % step 1 was the init, so skip it
     error = error + f_calcError(EmpiricalData1, log, i, changedAgents(1), changedAgents(2));
 
 end
+toc
 
 counter = 1;
 good_opinions = log;
 % errors = zeros(steps, 1);
 errors(counter) = error;
 counter = counter + 1;
-T = 1; % start temperature
-T_min = 0.01; % end temperature
-lambda = 0.97; % cooling rate
+iterations = 100;
 
 %% Parameter Estimation
-log_temp = zeros(steps, size(agent_internal,1), size(agent_internal,2)); % tracks agent change over time
-error_delta_count = 0;
-T_steps = ceil( abs( (log10(T)/log10(exp(1)) - log10(T_min)/log10(exp(1)))/(log10(lambda)/log10(exp(1)))) );
-error_delta_list = zeros(T_steps,1);
-
 tic
-counter_outer = 1;
-error_skip = 0;
-error_tolerance_log = zeros(T_steps);
-while T > T_min
+
+while counter < iterations
     agent_internal_temp = zeros(n_agents, 2);
     w_temp = ones(n_agents, 5);
     % Change the values in a neighbour value [-0.05, 0.05]  
     % min+rand(1,1)*(max-min)
+    
     agent_internal_temp(:,1) = EmpiricalData1(1, :, 1);
-    agent_internal_temp(:,2) = f_updateParameters(agent_internal, 2, 0.1);
+    agent_internal_temp(:,2) = f_updateParameters(agent_internal, 2, 0.05);
     w_temp(:,3) = f_updateParameters(w, 3, 0.05);
     
     log_temp = zeros(steps, size(agent_internal_temp,1), size(agent_internal_temp,2));
@@ -94,7 +88,7 @@ while T > T_min
             log_temp(i,:,:) = agent_internal_temp;
 
             % next line may be skipped/commented out for performance increase:
-            %error_now = error_now + f_calcError(EmpiricalData1, log_temp, i);
+            error_now = error_now + f_calcError(EmpiricalData1, log_temp, i);
             continue;
         end
 
@@ -108,30 +102,16 @@ while T > T_min
         log_temp(i,:,:) = agent_internal_temp;
         error_now = error_now + f_calcError(EmpiricalData1, log_temp, i, changedAgents(1), changedAgents(2));
     end
-
-    %% calc the error
-    error_delta = error_now - error
-    probability = rand();
-    
-    error_delta_list(counter_outer,1) = error_delta;
-    error_delta_mean = mean(error_delta_list(1+error_skip:counter_outer))
-    error_tolerance = (1/(error_delta/error_delta_mean)) * T
-    error_tolerance_log(counter_outer,1) = error_tolerance;
-    
     % If the found error is better than the best found until now, we store this new value
-    if error_now < error || probability < (error_tolerance) % this is new
+    if error_now < error
         error = error_now;
         agent_internal = agent_internal_temp;
         w = w_temp;
         good_opinions = log_temp;
-        errors(counter) = error_now;
-        counter = counter + 1;
-        error_skip = error_skip + 1;
     end
-    %error_now
-    T = T*lambda;
-    T
-    counter_outer = counter_outer + 1;
+    errors(counter) = error;
+    counter = counter + 1;
+    counter
 end
 toc
 
@@ -148,9 +128,4 @@ hold off;
 figure();
 hold on; 
 plot(errors, 'r');
-hold off; 
-
-figure();
-hold on; 
-plot(error_tolerance_log, 'b');
 hold off; 
