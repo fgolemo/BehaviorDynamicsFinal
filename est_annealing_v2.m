@@ -80,6 +80,7 @@ while T > T_min
     agent_internal_temp(:,2) = f_updateParameters(agent_internal, 2, 0.05);
     w_temp(:,3) = f_updateParameters(w, 3, 0.05);
     
+    log_temp = zeros(steps, size(agent_internal_temp,1), size(agent_internal_temp,2));
     log_temp(1,:,:) = agent_internal_temp;
     
     %% error calc (one simulation run)

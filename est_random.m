@@ -68,10 +68,12 @@ while counter < iterations
     w_temp = ones(n_agents, 5);
     % Change the values in a neighbour value [-0.05, 0.05]  
     % min+rand(1,1)*(max-min)
+    
     agent_internal_temp(:,1) = EmpiricalData1(1, :, 1);
     agent_internal_temp(:,2) = f_updateParameters(agent_internal, 2, 0.05);
     w_temp(:,3) = f_updateParameters(w, 3, 0.05);
     
+    log_temp = zeros(steps, size(agent_internal_temp,1), size(agent_internal_temp,2));
     log_temp(1,:,:) = agent_internal_temp;
     
     %% error calc (one simulation run)
@@ -100,7 +102,6 @@ while counter < iterations
         log_temp(i,:,:) = agent_internal_temp;
         error_now = error_now + f_calcError(EmpiricalData1, log_temp, i, changedAgents(1), changedAgents(2));
     end
-
     % If the found error is better than the best found until now, we store this new value
     if error_now < error
         error = error_now;
