@@ -1,5 +1,5 @@
 clear; clc; close all;
-load('scenario 1.mat'); % gives us EmpiricalData1 and EmpiricalData2
+load('scenario 2.mat'); % gives us EmpiricalData1 and EmpiricalData2
 
 %% General init
 steps = size(EmpiricalData1,1);
